@@ -19,12 +19,11 @@ import java.util.*;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private Logger log = Logger.getLogger(UserServiceImpl.class);
 
     @Override
     @Cache(key = "user{1}")
     public User get(String account) {
-        log.debug("从方法内读取....");
+        System.out.println("从方法内读取....");
         User user = new User("Ace", 24, account);
         return user;
     }
@@ -32,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cache(key = "user:list")
     public List<User> getLlist() {
-        log.debug("从方法内读取....");
+        System.out.println("从方法内读取....");
         List<User> users = new ArrayList<User>();
         for (int i = 0; i < 20; i++) {
             User user = new User("Ace", i, "ace");
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cache(key = "user:set", parser = SetCacheResultParser.class)
     public Set<User> getSet() {
-        log.debug("从方法内读取....");
+        System.out.println("从方法内读取....");
         Set<User> users = new HashSet<User>();
         for (int i = 0; i < 20; i++) {
             User user = new User("Ace", i, "ace");
@@ -54,10 +53,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cache(key = "user:map",parser = UserMapCacheResultParser.class)
+    @Cache(key = "user:map", parser = UserMapCacheResultParser.class)
     public Map<String, User> getMap() {
-        log.debug("从方法内读取....");
-        Map<String,User> users = new HashMap<String, User>();
+        System.out.println("从方法内读取....");
+        Map<String, User> users = new HashMap<String, User>();
         for (int i = 0; i < 20; i++) {
             User user = new User("Ace", i, "ace");
             users.put(user.getAccount() + i, user);
@@ -72,9 +71,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cache(key="user",generator = MyKeyGenerator.class)
+    @Cache(key = "user", generator = MyKeyGenerator.class)
     public User get(int age) {
-        log.debug("从方法内读取....");
+        System.out.println("从方法内读取....");
         User user = new User("Ace", age, "Ace");
         return user;
     }
@@ -91,6 +90,7 @@ public class UserServiceImpl implements UserService {
             });
         }
     }
+
     /**
      * 对set返回结果做处理
      *
@@ -99,7 +99,6 @@ public class UserServiceImpl implements UserService {
     public static class SetCacheResultParser implements ICacheResultParser {
         @Override
         public Object parse(String value, Type returnType, Class<?>... origins) {
-//            origins[0]
             return JSON.parseObject(value, new TypeReference<HashSet<User>>() {
             });
         }

@@ -10,15 +10,15 @@ import java.util.Set;
  * Created by Ace on 2017/5/21.
  */
 public interface UserService {
-    public User get(String account);
+    User get(String account);
 
-    public List<User> getLlist();
+    List<User> getLlist();
 
-    public Set<User> getSet();
+    Set<User> getSet();
 
-    public Map<String, User> getMap();
+    Map<String, User> getMap();
 
-    public void save(User user);
+    void save(User user);
 
-    public User get(int age);
+    User get(int age);
 }

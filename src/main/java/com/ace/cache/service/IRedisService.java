@@ -68,7 +68,7 @@ public interface IRedisService {
      * 根据前缀移除key
      * </p>
      *
-     * @param keys 一个key 也可以使 string 数组
+     * @param key 一个key 也可以使 string 数组
      * @return 返回删除成功的个数
      */
     Long delPre(String key);

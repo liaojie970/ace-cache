@@ -18,21 +18,21 @@ import com.ace.cache.entity.CacheBean;
  * @since 1.7
  */
 public interface ICacheManager {
-    public void removeAll();
+    void removeAll();
 
-    public void remove(String key);
+    void remove(String key);
 
-    public void remove(List<CacheBean> caches);
+    void remove(List<CacheBean> caches);
 
-    public void removeByPre(String pre);
+    void removeByPre(String pre);
 
-    public List<CacheTree> getAll();
+    List<CacheTree> getAll();
 
-    public List<CacheTree> getByPre(String pre);
+    List<CacheTree> getByPre(String pre);
 
-    public void update(String key, int hour);
+    void update(String key, int hour);
 
-    public void update(List<CacheBean> caches, int hour);
+    void update(List<CacheBean> caches, int hour);
 
-    public String get(String key);
+    String get(String key);
 }

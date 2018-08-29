@@ -38,7 +38,6 @@ public abstract class IKeyGenerator {
     /**
      * 当前登陆人key
      *
-     * @param userKeyGenerator
      */
     public abstract IUserKeyGenerator getUserKeyGenerator();
 

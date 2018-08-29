@@ -21,10 +21,8 @@ import com.ace.cache.parser.impl.DefaultResultParser;
  * @date 2017年5月4日
  * @since 1.7
  */
-@Retention(RetentionPolicy.RUNTIME)
-// 在运行时可以获取
-@Target(value = {ElementType.METHOD, ElementType.TYPE})
-// 作用到类，方法，接口上等
+@Retention(RetentionPolicy.RUNTIME)// 在运行时可以获取
+@Target(value = {ElementType.METHOD, ElementType.TYPE})// 作用到类，方法，接口上等
 public @interface Cache {
     /**
      * 缓存key menu_{0.id}{1}_type
@@ -33,7 +31,7 @@ public @interface Cache {
      * @author Ace
      * @date 2017年5月3日
      */
-    public String key() default "";
+    String key() default "";
 
     /**
      * 作用域
@@ -42,7 +40,7 @@ public @interface Cache {
      * @author Ace
      * @date 2017年5月3日
      */
-    public CacheScope scope() default CacheScope.application;
+    CacheScope scope() default CacheScope.application;
 
     /**
      * 过期时间
@@ -51,7 +49,7 @@ public @interface Cache {
      * @author Ace
      * @date 2017年5月3日
      */
-    public int expire() default 720;
+    int expire() default 720;
 
     /**
      * 描述
@@ -60,7 +58,7 @@ public @interface Cache {
      * @author Ace
      * @date 2017年5月3日
      */
-    public String desc() default "";
+    String desc() default "";
 
     /**
      * 返回类型
@@ -69,19 +67,19 @@ public @interface Cache {
      * @author Ace
      * @date 2017年5月4日
      */
-    public Class[] result() default Object.class;
+    Class[] result() default Object.class;
 
     /**
      * 返回结果解析类
      *
      * @return
      */
-    public Class<? extends ICacheResultParser> parser() default DefaultResultParser.class;
+    Class<? extends ICacheResultParser> parser() default DefaultResultParser.class;
 
     /**
      * 键值解析类
      *
      * @return
      */
-    public Class<? extends IKeyGenerator> generator() default DefaultKeyGenerator.class;
+    Class<? extends IKeyGenerator> generator() default DefaultKeyGenerator.class;
 }

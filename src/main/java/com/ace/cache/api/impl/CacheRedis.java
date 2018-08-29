@@ -8,11 +8,13 @@ import java.util.Set;
 
 import com.ace.cache.api.CacheAPI;
 import com.ace.cache.config.RedisConfig;
+import com.ace.cache.config.properties.RedisProperties;
 import com.ace.cache.constants.CacheConstants;
 import com.ace.cache.entity.CacheBean;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +32,10 @@ import com.ace.cache.service.IRedisService;
  * @since 1.7
  */
 @Service
+@DependsOn("redisProperties")
 public class CacheRedis implements CacheAPI {
     @Autowired
-    private RedisConfig redisConfig;
+    private RedisProperties redisProperties;
 
     @Autowired
     private IRedisService redisCacheService;
@@ -139,7 +142,7 @@ public class CacheRedis implements CacheAPI {
     @Override
     public String addSys(String key) {
         String result = key;
-        String sys = redisConfig.getSysName();
+        String sys = redisProperties.getSysName();
         if (key.startsWith(sys))
             result = key;
         else
@@ -224,6 +227,6 @@ public class CacheRedis implements CacheAPI {
 
     @Override
     public boolean isEnabled() {
-        return Boolean.parseBoolean(redisConfig.getEnable());
+        return Boolean.parseBoolean(redisProperties.getEnable());
     }
 }

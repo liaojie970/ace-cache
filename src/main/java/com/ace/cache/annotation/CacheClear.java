@@ -26,7 +26,7 @@ public @interface CacheClear {
      * @author Ace
      * @date 2017年5月3日
      */
-    public String pre() default "";
+    String pre() default "";
 
     /**
      * 缓存key
@@ -35,7 +35,7 @@ public @interface CacheClear {
      * @author Ace
      * @date 2017年5月3日
      */
-    public String key() default "";
+    String key() default "";
 
     /**
      * 缓存keys
@@ -44,12 +44,12 @@ public @interface CacheClear {
      * @author Ace
      * @date 2017年5月3日
      */
-    public String[] keys() default "";
+    String[] keys() default "";
 
     /**
      * 键值解析类
      *
      * @return
      */
-    public Class<? extends IKeyGenerator> generator() default DefaultKeyGenerator.class;
+    Class<? extends IKeyGenerator> generator() default DefaultKeyGenerator.class;
 }

@@ -1,20 +1,15 @@
 package com.ace.cache.service.impl;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.ace.cache.service.IRedisService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
+
+import java.util.*;
 
 @Service
 public class RedisServiceImpl implements IRedisService {

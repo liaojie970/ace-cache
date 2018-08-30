@@ -13,9 +13,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan({"com.ace.cache"})
 @EnableAspectJAutoProxy
 public class AutoConfiguration {
-    @Bean
-    @ConfigurationProperties(prefix = "redis")
-    public RedisProperties redisProperties() {
-        return new RedisProperties();
-    }
 }

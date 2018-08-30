@@ -1,7 +1,7 @@
 package com.ace.cache.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import redis.clients.jedis.JedisPool;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author：v
@@ -9,6 +9,8 @@ import redis.clients.jedis.JedisPool;
  * @Date: 2018/8/29
  * @Modified By:
  */
+@Configuration
+@ConfigurationProperties(prefix = "redis")
 public class RedisProperties {
     private PoolProperties pool;
     private String host;

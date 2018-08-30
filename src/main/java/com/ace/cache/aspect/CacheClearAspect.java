@@ -33,7 +33,6 @@ public class CacheClearAspect {
     private IKeyGenerator keyParser;
     @Autowired
     private CacheAPI cacheAPI;
-    protected Logger log = Logger.getLogger(this.getClass());
     private ConcurrentHashMap<String, IKeyGenerator> generatorMap = new ConcurrentHashMap<String, IKeyGenerator>();
 
     @Pointcut("@annotation(com.ace.cache.annotation.CacheClear)")
@@ -41,13 +40,12 @@ public class CacheClearAspect {
     }
 
     @Around("aspect()&&@annotation(anno)")
-    public Object interceptor(ProceedingJoinPoint invocation, CacheClear anno)
-            throws Throwable {
+    public Object interceptor(ProceedingJoinPoint invocation, CacheClear anno) throws Throwable {
         MethodSignature signature = (MethodSignature) invocation.getSignature();
         Method method = signature.getMethod();
         Class<?>[] parameterTypes = method.getParameterTypes();
         Object[] arguments = invocation.getArgs();
-        String key = "";
+        String key;
         if (StringUtils.isNotBlank(anno.key())) {
             key = getKey(anno, anno.key(), CacheScope.application,
                     parameterTypes, arguments);
@@ -76,12 +74,11 @@ public class CacheClearAspect {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    private String getKey(CacheClear anno, String key, CacheScope scope,
-                          Class<?>[] parameterTypes, Object[] arguments)
+    private String getKey(CacheClear anno, String key, CacheScope scope, Class<?>[] parameterTypes, Object[] arguments)
             throws InstantiationException, IllegalAccessException {
         String finalKey;
         String generatorClsName = anno.generator().getName();
-        IKeyGenerator keyGenerator = null;
+        IKeyGenerator keyGenerator;
         if (anno.generator().equals(DefaultKeyGenerator.class)) {
             keyGenerator = keyParser;
         } else {

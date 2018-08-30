@@ -3,23 +3,19 @@
  */
 package com.ace.cache.service.impl;
 
+import com.ace.cache.api.CacheAPI;
+import com.ace.cache.config.properties.RedisProperties;
+import com.ace.cache.entity.CacheBean;
+import com.ace.cache.service.ICacheManager;
+import com.ace.cache.vo.CacheTree;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.ace.cache.api.CacheAPI;
-import com.ace.cache.config.RedisConfig;
-import com.ace.cache.config.properties.RedisProperties;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
-
-import com.ace.cache.constants.CacheConstants;
-import com.ace.cache.entity.CacheBean;
-import com.ace.cache.service.ICacheManager;
-import com.ace.cache.vo.CacheTree;
 
 /**
  * 解决问题：
@@ -32,17 +28,9 @@ import com.ace.cache.vo.CacheTree;
 @Service
 public class CacheManagerImpl implements ICacheManager {
     @Autowired
-    private Environment env;
-    @Autowired
     private CacheAPI cacheAPI;
     @Autowired
     private RedisProperties redisProperties;
-    /**
-     *
-     */
-    public CacheManagerImpl() {
-
-    }
 
     @Override
     public void removeAll() {
@@ -68,7 +56,7 @@ public class CacheManagerImpl implements ICacheManager {
     @Override
     public void removeByPre(String pre) {
         if (!pre.contains(redisProperties.getSysName())) {
-            pre = redisProperties.getSysName()+ ":" + pre+"*";
+            pre = redisProperties.getSysName() + ":" + pre + "*";
         }
         cacheAPI.removeByPre(pre);
     }

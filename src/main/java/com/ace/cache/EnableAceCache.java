@@ -1,5 +1,6 @@
 package com.ace.cache;
 
+import com.ace.cache.config.properties.RedisProperties;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -10,7 +11,7 @@ import java.lang.annotation.*;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(AutoConfiguration.class)
+@Import({RedisProperties.class,AutoConfiguration.class})
 @Documented
 @Inherited
 public @interface EnableAceCache {

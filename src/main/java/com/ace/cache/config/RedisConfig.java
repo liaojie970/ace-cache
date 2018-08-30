@@ -1,22 +1,12 @@
 package com.ace.cache.config;
 
 import com.ace.cache.config.properties.RedisProperties;
-import com.ace.cache.utils.PropertiesLoaderUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.env.Environment;
-
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.RedisPipeline;
-
-import javax.annotation.PostConstruct;
 
 @Configuration
 public class RedisConfig {
@@ -25,7 +15,6 @@ public class RedisConfig {
     RedisProperties redisProperties;
 
     @Bean
-    @DependsOn("redisProperties")
     public JedisPoolConfig constructJedisPoolConfig() {
         JedisPoolConfig config = new JedisPoolConfig();
         // 控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；
@@ -41,7 +30,6 @@ public class RedisConfig {
     }
 
     @Bean(name = "pool")
-    @DependsOn("redisProperties")
     public JedisPool constructJedisPool() {
         String ip = redisProperties.getHost();
         int port = Integer.parseInt(redisProperties.getPort());
@@ -56,6 +44,4 @@ public class RedisConfig {
         }
         return pool;
     }
-
-
 }

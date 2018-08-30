@@ -1,9 +1,9 @@
 package com.ace.cache.utils;
 
+import com.ace.cache.vo.CacheTree;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ace.cache.vo.CacheTree;
 
 public class TreeUtils {
     public static List<CacheTree> buildTree(List<CacheTree> trees) {

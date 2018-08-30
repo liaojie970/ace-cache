@@ -143,7 +143,6 @@ public class RedisServiceImpl implements IRedisService {
             jedis = pool.getResource();
             return jedis.exists(key);
         } catch (Exception e) {
-
             LOGGER.error(e.getMessage());
             return false;
         } finally {

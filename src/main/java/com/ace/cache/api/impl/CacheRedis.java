@@ -32,7 +32,6 @@ import com.ace.cache.service.IRedisService;
  * @since 1.7
  */
 @Service
-@DependsOn("redisProperties")
 public class CacheRedis implements CacheAPI {
     @Autowired
     private RedisProperties redisProperties;
@@ -119,15 +118,7 @@ public class CacheRedis implements CacheAPI {
 
     private CacheBean getCacheBean(String key) {
         key = this.addSys(key);
-        CacheBean cache = null;
-        try {
-            cache = JSON.parseObject(redisCacheService.get(key),
-                    CacheBean.class);
-        } catch (Exception e) {
-            cache = new CacheBean();
-            cache.setKey(key);
-            cache.setExpireTime(redisCacheService.getExpireDate(key));
-        }
+        CacheBean cache = parseCacheBean(key);
         return cache;
     }
 
@@ -141,7 +132,7 @@ public class CacheRedis implements CacheAPI {
      */
     @Override
     public String addSys(String key) {
-        String result = key;
+        String result;
         String sys = redisProperties.getSysName();
         if (key.startsWith(sys))
             result = key;
@@ -152,12 +143,11 @@ public class CacheRedis implements CacheAPI {
 
     @Override
     public void set(String key, Object value, int expireMin, String desc) {
-        if (StringUtils.isBlank(key) || value == null
-                || StringUtils.isBlank(value.toString()))
+        if (StringUtils.isBlank(key) || value == null || StringUtils.isBlank(value.toString()))
             return;
         if (!isEnabled())
             return;
-        String realValue = "";
+        String realValue;
         if (value instanceof String) {
             realValue = value.toString();
         } else {
@@ -178,25 +168,30 @@ public class CacheRedis implements CacheAPI {
         if (result == null)
             return caches;
         Iterator<String> it = result.iterator();
-        String key = "";
-        CacheBean cache = null;
+        String key;
+        CacheBean cache;
         while (it.hasNext()) {
-            cache = null;
             key = it.next();
-            try {
-                cache = JSON.parseObject(redisCacheService.get(key),
-                        CacheBean.class);
-            } catch (Exception e) {
-                cache = new CacheBean();
-                cache.setKey(key);
-                cache.setExpireTime(redisCacheService.getExpireDate(key));
-            }
+            cache = parseCacheBean(key);
             if (cache == null)
                 continue;
             cache.setKey(key);
             caches.add(cache);
         }
         return caches;
+    }
+
+    private CacheBean parseCacheBean(String key) {
+        CacheBean cache;
+        try {
+            cache = JSON.parseObject(redisCacheService.get(key),
+                    CacheBean.class);
+        } catch (Exception e) {
+            cache = new CacheBean();
+            cache.setKey(key);
+            cache.setExpireTime(redisCacheService.getExpireDate(key));
+        }
+        return cache;
     }
 
     @Override
@@ -207,18 +202,10 @@ public class CacheRedis implements CacheAPI {
         Set<String> result = redisCacheService.getByPre(pre);
         Iterator<String> it = result.iterator();
         List<CacheBean> caches = new ArrayList<CacheBean>();
-        String key = "";
-        CacheBean cache = null;
+        String key;
         while (it.hasNext()) {
             key = it.next();
-            try {
-                cache = JSON.parseObject(redisCacheService.get(key),
-                        CacheBean.class);
-            } catch (Exception e) {
-                cache = new CacheBean();
-                cache.setKey(key);
-                cache.setExpireTime(redisCacheService.getExpireDate(key));
-            }
+            CacheBean cache = parseCacheBean(key);
             cache.setKey(key);
             caches.add(cache);
         }

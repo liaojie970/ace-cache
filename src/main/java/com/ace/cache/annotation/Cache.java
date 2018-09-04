@@ -44,12 +44,13 @@ public @interface Cache {
 
     /**
      * 过期时间
+     * 默认10分钟
      *
      * @return
      * @author Ace
      * @date 2017年5月3日
      */
-    int expire() default 720;
+    int expire() default 20;
 
     /**
      * 描述

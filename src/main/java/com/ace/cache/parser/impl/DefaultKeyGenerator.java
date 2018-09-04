@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.ace.cache.parser.IUserKeyGenerator;
 import com.ace.cache.utils.ReflectionUtils;
 import com.ace.cache.constants.CacheScope;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class DefaultKeyGenerator extends IKeyGenerator {
                 }
             }
         }
-        return key;
+        return StringUtils.removeEnd(key, ":");
     }
 
     @Override

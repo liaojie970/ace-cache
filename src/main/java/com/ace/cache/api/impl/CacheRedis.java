@@ -1,25 +1,17 @@
 package com.ace.cache.api.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import com.ace.cache.api.CacheAPI;
-import com.ace.cache.config.RedisConfig;
 import com.ace.cache.config.properties.RedisProperties;
 import com.ace.cache.constants.CacheConstants;
 import com.ace.cache.entity.CacheBean;
+import com.ace.cache.service.IRedisService;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
-import com.ace.cache.service.IRedisService;
+import java.util.*;
 
 /**
  * redis缓存

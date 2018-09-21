@@ -5,7 +5,7 @@ import com.ace.cache.config.properties.RedisProperties;
 import com.ace.cache.constants.CacheConstants;
 import com.ace.cache.entity.CacheBean;
 import com.ace.cache.service.IRedisService;
-import com.alibaba.fastjson.JSON;
+import com.ace.cache.utils.JacksonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class CacheRedis implements CacheAPI {
     public String get(String key) {
         if (!isEnabled())
             return null;
-        if(StringUtils.isBlank(key)){
+        if (StringUtils.isBlank(key)) {
             return null;
         }
         CacheBean cache = getCacheBean(key);
@@ -59,7 +59,7 @@ public class CacheRedis implements CacheAPI {
     public Long remove(String key) {
         if (!isEnabled())
             return 0L;
-        if(StringUtils.isBlank(key))
+        if (StringUtils.isBlank(key))
             return 0L;
         try {
             CacheBean cache = getCacheBean(key);
@@ -91,7 +91,7 @@ public class CacheRedis implements CacheAPI {
     public Long removeByPre(String pre) {
         if (!isEnabled())
             return 0L;
-        if(StringUtils.isBlank(pre))
+        if (StringUtils.isBlank(pre))
             return 0L;
         try {
             Set<String> result = redisCacheService.getByPre(addSys(pre));
@@ -140,17 +140,21 @@ public class CacheRedis implements CacheAPI {
         if (!isEnabled())
             return;
         String realValue;
-        if (value instanceof String) {
-            realValue = value.toString();
-        } else {
-            realValue = JSON.toJSONString(value, false);
+        try {
+            if (value instanceof String) {
+                realValue = value.toString();
+            } else {
+                realValue = JacksonUtils.obj2jsonIgnoreNull(value);
+            }
+            String realKey = CacheConstants.PRE + addSys(key);
+            Date time = new DateTime(redisCacheService.getExpireDate(realKey)).plusMinutes(expireMin).toDate();
+            CacheBean cache = new CacheBean(realKey, desc, time);
+            String result = JacksonUtils.obj2jsonIgnoreNull(cache);
+            redisCacheService.set(addSys(key), result, expireMin * 60);
+            redisCacheService.set(realKey, realValue, expireMin * 60);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        String realKey = CacheConstants.PRE + addSys(key);
-        Date time = new DateTime(redisCacheService.getExpireDate(realKey)).plusMinutes(expireMin).toDate();
-        CacheBean cache = new CacheBean(realKey, desc, time);
-        String result = JSON.toJSONString(cache, false);
-        redisCacheService.set(addSys(key), result, expireMin * 60);
-        redisCacheService.set(realKey, realValue, expireMin * 60);
     }
 
     @Override
@@ -176,8 +180,7 @@ public class CacheRedis implements CacheAPI {
     private CacheBean parseCacheBean(String key) {
         CacheBean cache;
         try {
-            cache = JSON.parseObject(redisCacheService.get(key),
-                    CacheBean.class);
+            cache = JacksonUtils.json2pojo(redisCacheService.get(key), CacheBean.class);
         } catch (Exception e) {
             cache = new CacheBean();
             cache.setKey(key);
@@ -188,7 +191,7 @@ public class CacheRedis implements CacheAPI {
 
     @Override
     public List<CacheBean> getCacheBeanByPre(String pre) {
-        if(StringUtils.isBlank(pre)){
+        if (StringUtils.isBlank(pre)) {
             return new ArrayList<CacheBean>();
         }
         Set<String> result = redisCacheService.getByPre(pre);

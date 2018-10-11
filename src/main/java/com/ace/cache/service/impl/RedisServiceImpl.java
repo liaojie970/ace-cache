@@ -19,6 +19,21 @@ public class RedisServiceImpl implements IRedisService {
     private JedisPool pool;
 
     @Override
+    public Long expire(String key, int seconds) {
+        Jedis jedis = null;
+        Long value = null;
+        try {
+            jedis = pool.getResource();
+            value = jedis.expire(key, seconds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            returnResource(pool, jedis);
+        }
+        return value;
+    }
+
+    @Override
     public String get(String key) {
         Jedis jedis = null;
         String value = null;

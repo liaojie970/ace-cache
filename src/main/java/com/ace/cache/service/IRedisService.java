@@ -1,13 +1,20 @@
 package com.ace.cache.service;
 
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
-
 public interface IRedisService {
+
+    /**
+     * 设置指定key的过期时间
+     *
+     * @Author LJ
+     */
+    Long expire(final String key, final int seconds);
 
     /**
      * <p>

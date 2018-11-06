@@ -65,14 +65,19 @@
         </developer>
     </developers>
     <distributionManagement>
-        <snapshotRepository>
+        <repository>
+            <!--此名称要和.m2/settings.xml中设置的ID一致-->
+            <id>linkdood</id>
+            <url>http://192.168.118.17:18081/repository/linkdood-central/</url>
+        </repository>
+        <!--<snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
+        </snapshotRepository>-->
+        <!--<repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
+        </repository>-->
     </distributionManagement>
     <build>
         <plugins>
